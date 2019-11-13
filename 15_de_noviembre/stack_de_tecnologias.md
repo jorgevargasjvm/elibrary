@@ -29,6 +29,7 @@
     Javascript 
     CSS
     Bootstrap 4
+    react JS
     
 # Patron
     MVC
