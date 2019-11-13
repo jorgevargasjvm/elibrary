@@ -22,6 +22,8 @@
 
 ## Backend 
     Javascript
+    Node Js
+    Express
 
 ## Front-end
     Javascript 
