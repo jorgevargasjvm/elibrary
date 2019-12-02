@@ -18,7 +18,7 @@ function readLibros(req, res){
 }
 
 function createLibro(req, res){
-    if(nombre && escritor && text && genero && detalles, && fecha){
+    if(nombre && escritor && text && genero && detalles && fecha){
 
         const libro = {
             nombre: req.body.nombre,

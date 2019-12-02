@@ -1,0 +1,29 @@
+.texto{
+    overflow: auto;
+    height: 70vh;
+    
+   
+}
+.texto::-webkit-scrollbar{
+    width: 2px;
+    display: block;
+   
+}
+.texto::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  .texto::-webkit-scrollbar-thumb {
+    background: black; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .texto::-webkit-scrollbar-thumb:hover {
+    background: blue; 
+  }
+  .audio:hover{
+    background: black; 
+  }
