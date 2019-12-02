@@ -20,3 +20,13 @@
 .App-link {
   color: #09d3ac;
 }
+img {
+  padding: 10px;
+  border-radius: 50%;
+  width:100%;
+  
+}
+body{
+  background: rgb(255,255,255);
+background: linear-gradient(18deg, rgba(255,255,255,1) 0%, rgba(240,253,255,1) 60%, rgba(187,210,239,1) 78%, rgba(0,56,182,1) 100%);
+}
