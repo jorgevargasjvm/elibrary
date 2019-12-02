@@ -1,7 +1,7 @@
 'use strict'
 /**
  * @description funcion que valida si la persona que está intentando acceder a la plataforma tiene la autorizacion
- * y / o tiene un usuario registrado en el sistema.
+ * y / o tiene un usuario registrado en el sistema y si este usuario es valido/
  */
 const services = require('../services')
 
