@@ -1,97 +1,121 @@
 
-const admin = require('../firebase/firedase');
+const admin = require('../firebase/fireconfig');
 var db = admin.database();
 
 //CRUD Libros
-function readLibros(req, res){
-    const libros = []
 
-    const firebase = await db.ref('libros').once('value', (dataSnapshot)=>{
+/**
+ * @name readLibros
+ * @description funcion que se encarga de buscar los libros existente en la DB
+ */
+async function readLibros(req, res) {
+
+    const findLibros = await db.ref('elibros').once('value', (dataSnapshot) => {
         libros = dataSnapshot.val();
-
-        res.send(libros); 
-
+        return res.send(libros);
     });
 
-    
-
 }
+/**
+ * @name createLibro
+ * @description funcion que se encarga de crear/cargar un en el sistema
+ */
 
-function createLibro(req, res){
-    if(nombre && escritor && text && genero && detalles && fecha){
+function createLibro(req, res) {
+   
+    const libro = {
+        nombre: req.body.nombre,
+        escritor: req.body.escritor,
+        text: req.body.text,
+        genero: req.body.genero,
+        detalles: req.body.detalles,
+        fecha: req.body.fecha,
+        email: req.body.email
 
-        const libro = {
-            nombre: req.body.nombre,
-            escritor: req.body.escritor,
-            text: req.body.text,
-            genero: req.body.genero,
-            detalles: req.body.detalles,
-            fecha: req.body.fecha
+    }
 
-        }
-    
-        const firebase = await db.ref('libros').once('value', (dataSnapshot)=>{
-            db.ref('libros').push(libro);
-            res.send("libro creado");
-        });
+    if (libro.nombre && libro.escritor && libro.text && libro.genero && libro.detalles && libro.fecha) {
+        db.ref('elibros').push(libro);
+        res.send("libro creado");
     }
 }
+/**
+ * @name readLibro
+ * @description funcion que se encarga de buscar un libro en especifico para que el usuario pueda leerlo
+ */
+async function readLibro(req, res) {
+    const libroId = req.body.id;
+    const libroName = req.body.nombre;
+    const libroEmail = req.body.email;
 
-function readLibro(req, res){
-    
-    if(req.body.id && req.body.nombre){
-        const firebase = await db.ref('libros').once('value', (dataSnapshot)=>{
+    if (libroId || libroName || libroEmail) {
+
+        const findLibro = await db.ref('elibros').once('value', (dataSnapshot) => {
             libros = dataSnapshot.val();
             for (const key in libros) {
-                if(libros[key]._id == req.body.id && libros[key].nombre == req.body.nombre){
-                    res.send( libros[key]); 
+                if (key === libroId) {
+                    return res.send(libros[key]);
                 }
-                
+                if(libros[key].nombre === libroName){
+                    return res.send(libros[key]);
+                }
+                if(libros[key].email === libroEmail){
+                    res.send(libros[key]);
+                }
+               
             }
+            return res.send("Err");
         });
-        
     }
-    
+
 }
 
+/**
+ * @name updateLibro
+ * @description busca y actualiza un libro existente. 
+ */
+async function updateLibro(req, res) {
+    const libroId = req.body.id;
+    const libro = {
+        nombre: req.body.nombre,
+        escritor: req.body.escritor,
+        text: req.body.text,
+        genero: req.body.genero,
+        detalles: req.body.detalles,
+        fecha: req.body.fecha
 
-function updateLibro(req, res){
-    if(req.body.id && req.body.nombre && req.body.escritor && req.body.text && req.body.genero && req.body.detalles){
+    }
 
-        const libro = {
-            nombre: req.body.nombre,
-            escritor: req.body.escritor,
-            text: req.body.text,
-            genero: req.body.genero,
-            detalles: req.body.detalles,
-            fecha: req.body.fecha
-
-        }
-    
-        const firebase = await db.ref('libros').once('value', (dataSnapshot)=>{
+    if (libro.nombre && libro.escritor && libro.text && libro.genero && libro.detalles && libroId) {
+        const findLibro = await db.ref('elibros').once('value', (dataSnapshot) => {
             libros = dataSnapshot.val();
             for (const key in libros) {
-                if(libros[key]._id == req.body.id){
+                if (key === libroId) {
                     dataSnapshot.ref.child(key).set(libro);
                     res.send("libro actualizado");
+                    
                 }
-                
             }
         });
     }
-    
-
 }
+/**
+ * @name deleteLibro
+ * @description busca y elimina el libro seleccionado. 
+ */
 
-function deleteLibro(req, res){
-    if(req.body.id){
-        const firebase = await db.ref('libros').once('value', (dataSnapshot)=>{
+async function deleteLibro(req, res) {
+
+    const libroId = req.body.id;
+    if (libroId) {
+        const findLibro = await db.ref('elibros').once('value', (dataSnapshot) => {
+            libros = dataSnapshot.val();
             for (const key in libros) {
-                if(libros[key]._id == req.body.id){
-                    dataSnapshot.ref.child(key).remove;
+                if (key === libroId) {
+                    dataSnapshot.ref.child(key).remove();
                     res.send("libro eliminado");
+                   
                 }
-                
             }
         });
     }
