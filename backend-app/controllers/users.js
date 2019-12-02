@@ -5,7 +5,6 @@ const service = require('../services');
 
 const admin = require('../firebase/fireconfig');
 const db = admin.database();
-
 /**
  * @name isValidEmail
  * @description valida si el correo que le pasamos por parametro tiene un formato valido
@@ -28,7 +27,7 @@ async function signUp(req, res) {
         password: req.body.password,
         rol: req.body.rol,
         image: req.body.image,
-        libros_id: null
+        libros_id: ["null"]
     };
 
     if (isValidEmail(user.email) === true) {
@@ -50,7 +49,7 @@ async function signUp(req, res) {
             }
         }
     } else {
-        console.log("Correo no valido");
+        res.send("Correo no valido");
     }
 
 }
@@ -63,6 +62,12 @@ async function signUp(req, res) {
  */
 async function signIn(req, res) {
     var login = false;
+    var nombre = '';
+    var email = '';
+    var rol = '';
+    var image = '';
+    var libros_id;
+
     const user = {
         email: req.body.email,
         password: req.body.password,
@@ -74,6 +79,11 @@ async function signIn(req, res) {
                 if (users[key].email === user.email) {
                     if (users[key].password === user.password) {
                         login = true;
+                        nombre = users[key].name;
+                        email = users[key].email;
+                        rol = users[key].rol;
+                        image = users[key].image;
+                        libros_id = users[key].libros_id;
                     }
                     break;
                 }
@@ -81,7 +91,7 @@ async function signIn(req, res) {
         })
         if (login === true) {
             //token
-            return res.status(200).send({ token: service.createToken(user) });
+            return res.status(200).send({ token: service.createToken(user), nombre, email, rol, image, libros_id });
         } else {
             res.send("Error email y password");
         }
@@ -101,6 +111,15 @@ async function addLibro(req, res) {
 
     const id = req.body.id;
     const email = req.body.email;
+    var myUser = {
+        emai: '',
+        image: '',
+        name: '',
+        password: '',
+        rol: '',
+        libros_id: []
+
+    }
 
     if (id && email) {
 
@@ -115,23 +134,33 @@ async function addLibro(req, res) {
             }
         });
         if (libroId) {
-            res.send("Libro  Ok");
-
             const findEmail = await db.ref('users').once('value', (dataSnapshot) => {
                 var users = dataSnapshot.val();
                 for (const key in users) {
-                    if (users[key].email === user.email) {
-                        if (users[key].libros_id) {
-                            users[key].libros_id.push(id);
-                        } else {
-                            users[key].libros_id = [id];
-                        }
+                    if (users[key].email === email) {
 
-                        dataSnapshot.ref.child(key).set(users);
+                        myUser.email = users[key].email;
+                        myUser.image = users[key].image;
+                        myUser.name = users[key].name;
+                        myUser.password = users[key].password;
+                        myUser.rol = users[key].rol;
+                        if (users[key].libros_id) {
+                            myUser.libros_id = users[key].libros_id;
+                        }
+                       
+
+                        for (const i = 0; i < myUser.libros_id.length - 1; i++) {
+                            if (myUser.libros_id[i] === id) {
+                                return res.send("Este libro fue agregado");
+                            }
+                        }
+                        myUser.libros_id.push(id);
+
+                        dataSnapshot.ref.child(key).set(myUser);
                         return res.send("Libro agregado");
                     }
                 }
-                res.send("Email no valido");
+
             })
         }
         else {
@@ -155,39 +184,56 @@ async function removeLibro(req, res) {
 
     const id = req.body.id;
     const email = req.body.email;
+    var myUser = {
+        emai: '',
+        image: '',
+        name: '',
+        password: '',
+        rol: '',
+        libros_id: []
+
+    }
 
     if (id && email) {
-        const findEmail = await db.ref('users').once('value', (dataSnapshot) => {
-            var users = dataSnapshot.val();
-            for (const key in users) {
-                if (users[key].email === user.email) {
-                    if (users[key].libros_id) {
-                        var newId = []
 
-                        for (const l in users[key].libros_id) {
-                            if (l !== id) {
-                                newId.push(l);
-                            } else {
-                                res.send("libro eliminado");
+       
+            const findEmail = await db.ref('users').once('value', (dataSnapshot) => {
+                var users = dataSnapshot.val();
+                for (const key in users) {
+                    if (users[key].email === email) {
+
+                        myUser.email = users[key].email;
+                        myUser.image = users[key].image;
+                        myUser.name = users[key].name;
+                        myUser.password = users[key].password;
+                        myUser.rol = users[key].rol;
+                        if (users[key].libros_id) {
+                            myUser.libros_id = users[key].libros_id;
+                        }
+                       
+
+                        for (const i = 0; i < myUser.libros_id.length; i++) {
+                            if (myUser.libros_id[i] === id) {
+                                myUser.libros_id.splice(i, 1);
+                                res.send("se encontro el libro a eliminar");
+                                break;
                             }
                         }
-                        users[key].libros_id = newId;
-                        dataSnapshot.ref.child(key).set(users);
-                        return res.send("Datos actualizado");
-
-                    } else {
-                        return res.send("No tiene libro que eliminar");
+                        
+                        if(myUser.libros_id.length == 0){
+                            myUser.libros_id.push('null');
+                        }
+                        dataSnapshot.ref.child(key).set(myUser);
+                        return res.send("Libro eliminado");
                     }
-                    break;
-
                 }
-            }
-            res.send("Email no valido");
-        })
-    }
-    else {
-        res.send("Error email y libro_id");
-    }
+
+            })
+        }
+        else {
+            res.send("Error email y libro_id");
+        }
+   
 
 }
 

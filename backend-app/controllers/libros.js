@@ -29,7 +29,8 @@ function createLibro(req, res) {
         text: req.body.text,
         genero: req.body.genero,
         detalles: req.body.detalles,
-        fecha: req.body.fecha
+        fecha: req.body.fecha,
+        email: req.body.email
 
     }
 
@@ -45,16 +46,25 @@ function createLibro(req, res) {
 async function readLibro(req, res) {
     const libroId = req.body.id;
     const libroName = req.body.nombre;
+    const libroEmail = req.body.email;
 
-    if (libroId || libroName) {
+    if (libroId || libroName || libroEmail) {
 
         const findLibro = await db.ref('elibros').once('value', (dataSnapshot) => {
             libros = dataSnapshot.val();
             for (const key in libros) {
-                if (key === libroId || libros[key].nombre === libroName) {
+                if (key === libroId) {
                     return res.send(libros[key]);
                 }
+                if(libros[key].nombre === libroName){
+                    return res.send(libros[key]);
+                }
+                if(libros[key].email === libroEmail){
+                    res.send(libros[key]);
+                }
+               
             }
+            return res.send("Err");
         });
     }
 
@@ -83,7 +93,7 @@ async function updateLibro(req, res) {
                 if (key === libroId) {
                     dataSnapshot.ref.child(key).set(libro);
                     res.send("libro actualizado");
-                    return res.send(libro);
+                    
                 }
             }
         });
@@ -104,7 +114,7 @@ async function deleteLibro(req, res) {
                 if (key === libroId) {
                     dataSnapshot.ref.child(key).remove();
                     res.send("libro eliminado");
-                    return res.send(libro);
+                   
                 }
             }
         });
