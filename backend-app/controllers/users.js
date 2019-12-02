@@ -92,7 +92,7 @@ async function signIn(req, res) {
 
 /**
  * @name addLibro
- * @description permite agregar un libro al listado. 
+ * @description permite agregar un libro a un usuario. 
  * @param {*} req 
  * @param {*} res 
  */
@@ -146,7 +146,7 @@ async function addLibro(req, res) {
 }
 /**
  * @name removeLibro
- * @description elimina un libro del listado existente
+ * @description elimina un libro a un usuario. 
  * @param {*} req 
  * @param {*} res 
  */
