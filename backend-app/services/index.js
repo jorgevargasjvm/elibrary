@@ -1,9 +1,14 @@
 'use strict'
-
+// Instancias
 const jwt = require('jwt-simple')
 const moment = require('moment')
 const config = require('../config')
 
+/**
+ * @name createToken
+ * @description genera el secretToken del usuario
+ * @param {*} user 
+ */
 function createToken (user) {
   const payload = {
     sub: user._id,
@@ -13,7 +18,11 @@ function createToken (user) {
 
   return jwt.encode(payload, config.SECRET_TOKEN)
 }
-
+/**
+ * @name decodeToken
+ * @description descodifica el token y valida si este aun está activo
+ * @param {*} token 
+ */
 function decodeToken (token) {
   const decoded = new Promise((resolve, reject) => {
     try {

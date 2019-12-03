@@ -25,7 +25,7 @@ app.use('/api', routes);
 app.get('/', function (req, res) {
   res.send('API');
 });
-
+// Puerto donde corre la aplicacion localmente.
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 }); 
