@@ -5,20 +5,11 @@ const service = require('../services');
 
 const admin = require('../firebase/fireconfig');
 const db = admin.database();
-/**
- * @name isValidEmail
- * @description valida si el correo que le pasamos por parametro tiene un formato valido
- * @param {*} mail 
- */
+
 function isValidEmail(mail) {
     return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/.test(mail);
 }
-/**
- * @name signUp
- * @description permite crear un usuario en el sistema y valida si este ya no esta creado.
- * @param {*} req 
- * @param {*} res 
- */
+
 async function signUp(req, res) {
     var email = false;
     const user = {
@@ -53,13 +44,7 @@ async function signUp(req, res) {
     }
 
 }
-/**
- * @name signIn
- * @description hacer login/iniciar session en el sistema. Valida si existe una cuenta creada con las credenciales 
- * introducidas
- * @param {*} req 
- * @param {*} res 
- */
+
 async function signIn(req, res) {
     var login = false;
     var nombre = '';
@@ -100,12 +85,7 @@ async function signIn(req, res) {
     }
 }
 
-/**
- * @name addLibro
- * @description permite agregar un libro a un usuario. 
- * @param {*} req 
- * @param {*} res 
- */
+
 async function addLibro(req, res) {
     var libroId = false;
 
@@ -174,12 +154,6 @@ async function addLibro(req, res) {
 
 }
 
-/**
- * @name removeLibro
- * @description elimina un libro a un usuario. 
- * @param {*} req 
- * @param {*} res 
- */
 async function removeLibro(req, res) {
     var libroId = false;
 

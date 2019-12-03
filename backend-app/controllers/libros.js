@@ -3,11 +3,6 @@ const admin = require('../firebase/fireconfig');
 var db = admin.database();
 
 //CRUD Libros
-
-/**
- * @name readLibros
- * @description funcion que se encarga de buscar los libros existente en la DB
- */
 async function readLibros(req, res) {
 
     const findLibros = await db.ref('elibros').once('value', (dataSnapshot) => {
@@ -16,10 +11,6 @@ async function readLibros(req, res) {
     });
 
 }
-/**
- * @name createLibro
- * @description funcion que se encarga de crear/cargar un en el sistema
- */
 
 function createLibro(req, res) {
    
@@ -39,10 +30,7 @@ function createLibro(req, res) {
         res.send("libro creado");
     }
 }
-/**
- * @name readLibro
- * @description funcion que se encarga de buscar un libro en especifico para que el usuario pueda leerlo
- */
+
 async function readLibro(req, res) {
     const libroId = req.body.id;
     const libroName = req.body.nombre;
@@ -70,10 +58,7 @@ async function readLibro(req, res) {
 
 }
 
-/**
- * @name updateLibro
- * @description busca y actualiza un libro existente. 
- */
+
 async function updateLibro(req, res) {
     const libroId = req.body.id;
     const libro = {
@@ -99,26 +84,30 @@ async function updateLibro(req, res) {
         });
     }
 }
-/**
- * @name deleteLibro
- * @description busca y elimina el libro seleccionado. 
- */
 
 async function deleteLibro(req, res) {
 
     const libroId = req.body.id;
-    if (libroId) {
+    const nombre = req.body.nombre;
+    const email = req.body.email;
+
+    
         const findLibro = await db.ref('elibros').once('value', (dataSnapshot) => {
             libros = dataSnapshot.val();
             for (const key in libros) {
                 if (key === libroId) {
                     dataSnapshot.ref.child(key).remove();
-                    res.send("libro eliminado");
-                   
+                   return res.send("libro eliminado");
                 }
+                if (libros[key].nombre === nombre && libros[key].email === email) {
+                    dataSnapshot.ref.child(key).remove();
+                    
+                   return res.send("libro eliminado");
+                }
+                
             }
         });
-    }
+    
 
 }
 
