@@ -8,7 +8,7 @@ function loginIn(inUser) {
   console.log("login in function");
   var email = document.getElementById('email-i').value;
   var password = document.getElementById('password-i').value;
-
+  
   if (email !== '' && password !== '') {
     //axios API users
     axios.post('http://localhost:3000/api/sign_in', { email, password })
@@ -17,6 +17,7 @@ function loginIn(inUser) {
         var docs = response.data;
         inUser({ email: docs.email, image: docs.image, nombre: docs.nombre, rol: docs.rol, token: docs.token });
         alert(`Welcome ${docs.nombre} !!!`);
+        
       })
       .catch(function (error) {
         // handle error

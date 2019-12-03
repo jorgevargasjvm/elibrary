@@ -79,9 +79,11 @@ function actualizar_libro() {
 function eliminar_libro() {
   alert("deliminar un libro")
   var id = document.getElementById("id_libro_eliminar").value;
-  if (id) {
+  var nombre = document.getElementById("nombre_libro_eliminar").value;
+  var email = document.getElementById("email_libro_eliminar").value;
+  if (id || (nombre && email)) {
     alert("campos llenos")
-    axios.post('http://localhost:3000/api/delete_libro', {id})
+    axios.post('http://localhost:3000/api/delete_libro', {id, nombre, email})
     .then(function (response) {
       // handle success
       console.log(response);
@@ -302,7 +304,16 @@ function EliminarLibro() {
           <input type="email" className="form-control" id="id_libro_eliminar" aria-describedby="ID del libro" placeholder="ID del libro" />
           <small id="emailHelp" className="form-text text-muted">Codigo del libro</small>
         </div>
-
+        <div className="form-group">
+          <label >Nombre</label>
+          <input type="text" className="form-control" id="nombre_libro_eliminar" aria-describedby="Nombre del libro" placeholder="Nombre del libro" />
+          <small id="emailHelp" className="form-text text-muted">Nombre</small>
+        </div>
+        <div className="form-group">
+          <label >Email</label>
+          <input type="email" className="form-control" id="email_libro_eliminar" aria-describedby="Email de quien lo creo" placeholder="Email de quien lo creo" />
+          <small id="emailHelp" className="form-text text-muted">Email</small>
+        </div>
 
         <button type="button" className="btn btn-dark btn-sm" onClick={() => eliminar_libro()}>Delete</button>
       </form>
