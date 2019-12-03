@@ -107,3 +107,6 @@ dist
 
 # Visual Code
 .vscode/
+
+#firebase
+key.json
