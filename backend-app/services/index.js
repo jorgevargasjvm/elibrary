@@ -18,7 +18,6 @@ function createToken (user) {
 
   return jwt.encode(payload, config.SECRET_TOKEN)
 }
-
 /**
  * @name decodeToken
  * @description descodifica el token y valida si este aun está activo

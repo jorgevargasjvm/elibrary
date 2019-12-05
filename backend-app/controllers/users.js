@@ -5,7 +5,6 @@ const service = require('../services');
 
 const admin = require('../firebase/fireconfig');
 const db = admin.database();
-
 /**
  * @name isValidEmail
  * @description valida si el correo que le pasamos por parametro tiene un formato valido
@@ -67,6 +66,7 @@ async function signIn(req, res) {
     var email = '';
     var rol = '';
     var image = '';
+    var libros_id;
 
     const user = {
         email: req.body.email,
@@ -83,6 +83,7 @@ async function signIn(req, res) {
                         email = users[key].email;
                         rol = users[key].rol;
                         image = users[key].image;
+                        libros_id = users[key].libros_id;
                     }
                     break;
                 }
@@ -90,7 +91,7 @@ async function signIn(req, res) {
         })
         if (login === true) {
             //token
-            return res.status(200).send({ token: service.createToken(user), nombre, email, rol, image });
+            return res.status(200).send({ token: service.createToken(user), nombre, email, rol, image, libros_id });
         } else {
             res.send("Error email y password");
         }

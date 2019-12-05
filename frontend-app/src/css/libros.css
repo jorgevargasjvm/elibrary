@@ -1,0 +1,10 @@
+.lista-libros{
+    overflow: auto;
+    height: 90vh;
+    
+   
+}
+.lista-libros::-webkit-scrollbar{
+    width: 2px;
+   
+}
