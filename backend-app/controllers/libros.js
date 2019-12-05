@@ -51,8 +51,11 @@ async function readLibro(req, res) {
         const findLibro = await db.ref('elibros').once('value', (dataSnapshot) => {
             libros = dataSnapshot.val();
             for (const key in libros) {
-                if (key === libroId || libros[key].nombre === libroName) {
+                if (key === libroId) {
                     return res.send(libros[key]);
+                }
+               else {
+                    res.send(libros[key]);
                 }
             }
         });
@@ -83,7 +86,7 @@ async function updateLibro(req, res) {
                 if (key === libroId) {
                     dataSnapshot.ref.child(key).set(libro);
                     res.send("libro actualizado");
-                    return res.send(libro);
+                    
                 }
             }
         });
@@ -104,7 +107,7 @@ async function deleteLibro(req, res) {
                 if (key === libroId) {
                     dataSnapshot.ref.child(key).remove();
                     res.send("libro eliminado");
-                    return res.send(libro);
+                   
                 }
             }
         });
