@@ -60,7 +60,7 @@ function actualizar_libro() {
   var fecha = document.getElementById('fecha_libro_actualizar').value;
   var detalles = document.getElementById('detalles_libro_actualizar').value;
   var text = document.getElementById('text_libro_actualizar').value;
-  if (id && nombre && escritor && genero && fecha && detalles && text && email) {
+  if (nombre && escritor && genero && fecha && detalles && text && email) {
     alert("campos llenos")
     axios.post('http://localhost:3000/api/update_libro', {id, email, nombre, escritor, genero, fecha, detalles, text })
     .then(function (response) {
@@ -302,7 +302,7 @@ function EliminarLibro() {
         <div className="form-group">
           <label >ID</label>
           <input type="email" className="form-control" id="id_libro_eliminar" aria-describedby="ID del libro" placeholder="ID del libro" />
-          <small id="emailHelp" className="form-text text-muted">Codigo del libro</small>
+          <small id="text" className="form-text text-muted">Codigo del libro</small>
         </div>
         <div className="form-group">
           <label >Nombre</label>
