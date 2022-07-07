@@ -15,6 +15,6 @@
     "express": "^4.17.1",
     "firebase-admin": "^8.6.1",
     "jwt-simple": "^0.5.6",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   }
 }
